@@ -1,0 +1,21 @@
+{
+  "name": "practics",
+  "version": "1.0.0",
+  "description": "review all my knowledge",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "review",
+    "explore",
+    "discover",
+    "research"
+  ],
+  "author": "Raxmatov Eldorbek",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "uuid": "^10.0.0"
+  }
+}
