@@ -4,7 +4,8 @@
   "description": "review all my knowledge",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "review",
@@ -15,7 +16,12 @@
   "author": "Raxmatov Eldorbek",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "mongoose": "^8.6.2",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
