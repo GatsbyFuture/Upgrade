@@ -8,7 +8,8 @@ const postSchema = new Schema({
     body: {
         type: String,
         require: true
-    }
+    },
+    picture: String
 })
 
 module.exports = model('Post', postSchema);

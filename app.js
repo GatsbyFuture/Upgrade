@@ -2,39 +2,19 @@
 require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
+const postRoute = require('./routers/post.router');
+const requestTime = require('./middlewares/request-time');
+
 const app = express();
-const postModel = require('./models/post.model')
 
+app.use(requestTime);
 app.use(express.json());
-app.get('/', async (req, res) => {
-    try {
-        const Posts = await postModel.find();
-        res.status(200).json({result: Posts});
-    } catch (e) {
-        res.status(500).json(e);
-    }
-});
+app.use(express.static('static'));
+app.use(fileUpload({}));
 
-app.post('/', async (req, res) => {
-    try {
-        const {title, body} = req.body;
-        const newPost = await postModel.create({title, body});
-        res.status(200).json({result: newPost});
-    } catch (e) {
-        res.status(500).json(e);
-    }
-})
-
-app.delete('/:id', (req, res) => {
-    const {id} = req.params;
-    res.send(id);
-});
-
-app.put('/:id', (req, res) => {
-    const {id} = req.params;
-    const body = req.body;
-    res.json({id: id, data: body});
-})
+// route for post direct
+app.use('/api/post', postRoute);
 
 const PORT = process.env.PORT || 8000;
 const bootstrap = async () => {
