@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
-const postRoute = require('./routers/post.router');
+const authRoute = require('./routes/auth.route')
+const postRoute = require('./routes/post.route');
 const requestTime = require('./middlewares/request-time');
 
 const app = express();
@@ -13,7 +14,8 @@ app.use(express.json());
 app.use(express.static('static'));
 app.use(fileUpload({}));
 
-// route for post direct
+// routes for post direct
+app.use('/api/auth', authRoute);
 app.use('/api/post', postRoute);
 
 const PORT = process.env.PORT || 8000;

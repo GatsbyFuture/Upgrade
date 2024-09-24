@@ -1,5 +1,5 @@
 const postModel = require('../models/post.model');
-const fileService = require('../server/file.server');
+const fileService = require('.//file.server');
 
 class PostService {
     async create(post, picture) {
