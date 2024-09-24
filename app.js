@@ -6,11 +6,14 @@ const fileUpload = require('express-fileupload');
 const authRoute = require('./routes/auth.route')
 const postRoute = require('./routes/post.route');
 const requestTime = require('./middlewares/request-time');
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 
 app.use(requestTime);
 app.use(express.json());
+app.use(cookieParser({}));
 app.use(express.static('static'));
 app.use(fileUpload({}));
 
