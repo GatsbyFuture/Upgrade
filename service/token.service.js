@@ -17,7 +17,32 @@ class TokenService {
         }
 
         const token = await tokenModel.create({user: userId, refreshToken});
+
         return token;
+    }
+
+    async removeToken(refreshToken) {
+        return await tokenModel.findOneAndDelete({refreshToken});
+    }
+
+    async findToken(refreshToken) {
+        return await tokenModel.findOne({refreshToken});
+    }
+
+    validateRefreshToken(token) {
+        try {
+            return jwt.verify(token, process.env.JWT_REFRESH_KEY);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    validateAccessToken(token) {
+        try {
+            return jwt.verify(token, process.env.JWT_ACCESS_KEY);
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
