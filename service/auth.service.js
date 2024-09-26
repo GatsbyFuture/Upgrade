@@ -1,15 +1,16 @@
-const userModel = require('../models/user.model');
 const UserDto = require('../dtos/user.dto');
+const userModel = require('../models/user.model');
 const tokenService = require('./token.service');
 const mailSerivce = require('./mail.service');
 const bcrypt = require('bcrypt');
+const BaseError = require('../errors/base.error');
 
 class AuthService {
     async register(email, password) {
         const existUser = await userModel.findOne({email: email});
 
         if (existUser) {
-            throw new Error(`User with existing email ${email} already registered`);
+            throw BaseError.BadRequest(`User with existing email ${email} already registered`);
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
@@ -28,7 +29,7 @@ class AuthService {
     async activation(userId) {
         const user = await userModel.findById(userId);
         if (!user) {
-            throw new Error('User is not found');
+            throw BaseError.BadRequest('User is not found')
         }
         user.isActivated = true;
         await user.save();
@@ -37,12 +38,12 @@ class AuthService {
     async login(email, password) {
         const user = await userModel.findOne({email});
         if (!user) {
-            throw new Error('User is not defined')
+            throw BaseError.BadRequest('User not found!');
         }
 
         const isPassword = await bcrypt.compare(password, user.password);
         if (!isPassword) {
-            throw new Error('Password is incorrecta')
+            throw BaseError.BadRequest('Password is incorrect!');
         }
 
         const userDto = new UserDto(user);
@@ -60,14 +61,14 @@ class AuthService {
 
     async refresh(refreshToken) {
         if (!refreshToken) {
-            throw new Error('Bad authorization');
+            throw BaseError.UnauthorizedError();
         }
 
         const userPayload = tokenService.validateRefreshToken(refreshToken);
         console.log('userPayload', userPayload);
         const tokenDb = await tokenService.findToken(refreshToken);
         if (!userPayload || !tokenDb) {
-            throw new Error('Bad authorization');
+            throw BaseError.UnauthorizedError();
         }
 
         const user = await userModel.findById(userPayload.id);

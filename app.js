@@ -7,7 +7,7 @@ const authRoute = require('./routes/auth.route')
 const postRoute = require('./routes/post.route');
 const requestTime = require('./middlewares/request-time');
 const cookieParser = require('cookie-parser');
-
+const errorMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
 
@@ -18,8 +18,10 @@ app.use(express.static('static'));
 app.use(fileUpload({}));
 
 // routes for post direct
-app.use('/api/auth', authRoute);
 app.use('/api/post', postRoute);
+app.use('/api/auth', authRoute);
+
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 8000;
 const bootstrap = async () => {

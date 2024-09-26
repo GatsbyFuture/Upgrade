@@ -1,8 +1,15 @@
 const express = require('express');
+const {body} = require('express-validator');
 const authController = require('../controllers/auth.controller');
 const router = express.Router();
 
-router.post('/register', authController.register);
+router.post('/register',
+    body('email').isEmail(),
+    body('password')
+        .isLength({min: 3, max: 25}),
+    authController.register
+)
+;
 router.get('/activation/:id', authController.activation);
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
