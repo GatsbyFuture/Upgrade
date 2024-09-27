@@ -3,7 +3,7 @@ const postService = require('../service/post.service')
 class PostController {
     async create(req, res, next) {
         try {
-            const newPost = await postService.create(req.body, req.files.picture);
+            const newPost = await postService.create(req.body, req.files.picture, req.user.id);
             res.status(200).json({result: newPost});
         } catch (e) {
             next(e);
