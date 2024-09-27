@@ -60,6 +60,15 @@ class AuthController {
             next(e);
         }
     }
+
+    async getUser(req, res, next) {
+        try {
+            const data = await authService.getUsers();
+            return res.json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new AuthController();
